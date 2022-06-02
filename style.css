@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@400;700&display=swap');
+:root{
+--blue:#2892d7;
+--dark:#222222;
+--red:#ff0000;
+--green:#008000;
+--white:#ffffff;
+--gray:#bbb7b7;
+}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+body{
+    font-family: 'Catamaran', sans-serif; 
+    background: #ececec;   
+}
+.container{
+    max-width:1360px;
+    margin:0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+header{
+    width: 100%;
+    height: 80px;
+    background: var(--blue);
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    color: var(--white);
+}
+nav{
+    width: 560px;
+    height: 100%;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    color: var(--white);
+    font-size: 20px;
+}
+nav .add button{
+    background: transparent;
+    color: var(--dark);
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+}
+nav .add button:hover{
+    color: var(--gray);
+}
+nav .add> button> span{
+    border: 1px solid ;
+    padding: 2px;
+}
+main{
+    width: 560px;
+    height: calc(100% - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+   
+}
+.total,.expenses-list{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: var(--blue);
+}
+.total>span{
+    font-size: 2rem;
+    font-weight: bold;
+    margin-left: 1rem;
+}
+.expenses-list{
+    width: 100%;
+    height: calc(100% - 100px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.expenses-list> .expense{
+    width: 100%;
+    height: 75px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+   box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.5);
+    padding:0 10px;
+    margin-top: 1.2rem;
+    background: var(--white);
+    border-radius: 3px;
+}
+.expenses-list>.expense>div{
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    color: var(--dark);
+}
+.expenses-list>.expense>div>button{
+    background: transparent;
+    color: var(--blue);
+    border: none;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.expense>.action{
+    width: 100px;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.fa-trash{
+    font-size: 1.2rem;
+    color: var(--red);
+    cursor: pointer;
+}
+.fa-pen{
+    font-size: 1.2rem;
+    color: var(--green);
+    cursor: pointer;
+}
+.clear-expenses{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.clear-expenses>button{
+    width: 100%;
+    height: 100%;
+    background: var(--blue);
+    color: var(--red);
+    border: none;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-top: 4rem;
+    color: var(--white);
+    box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.5);
+    border-radius: 3px;
+}
+.clear-expenses>button:hover{
+    background: var(--white);
+    color: var(--blue);
+    border: 2px solid var(--blue);
+}
