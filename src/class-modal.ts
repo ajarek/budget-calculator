@@ -1,8 +1,7 @@
-
 export class Modal {
-  constructor() {
   
-  }
+  constructor() {}
+
   render() {
       const modal = document.createElement('div');
         modal.classList.add('modal');
@@ -19,15 +18,6 @@ export class Modal {
         });
         const form = document.createElement('form');
         form.classList.add('form');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const expense = {
-                name: (document.querySelector('#name') as HTMLInputElement).value,
-                amount: (document.querySelector('#amount') as HTMLInputElement).value,
-            }
-            console.log(expense);
-            
-        });
         const label = document.createElement('label');
         label.textContent = 'Name';
         const input = document.createElement('input');
@@ -44,6 +34,5 @@ export class Modal {
         form.append(label, input, label2, input2, submit);
         modal.append(title, close, form);
     return modal;
-
   }
 }

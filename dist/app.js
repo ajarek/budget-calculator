@@ -1,36 +1,89 @@
 import { Modal } from "./class-modal.js";
-let arr = [{ name: 'Cat', amount: 200 }, { name: 'Dog', amount: 300 }, { name: 'Bird', amount: 400 }];
-const body = document.querySelector('body');
-const container = document.querySelector('.container');
-const addExpense = document.querySelector('#add-expense');
-const expensesList = document.querySelector('.expenses-list');
+let arr = [];
+const body = document.querySelector("body");
+const container = document.querySelector(".container");
+const addExpense = document.querySelector("#add-expense");
+const expensesList = document.querySelector(".expenses-list");
+const btnClear = document.querySelector(".clear-expenses>button");
+const totalExpense = document.querySelector(".total>span");
 class Item {
     constructor() {
+        this.render();
+        this.deleteItem();
+        this.clearAll();
+        this.totalAmount();
     }
     render() {
-        arr.forEach(element => {
-            const item = document.createElement('div');
-            item.classList.add('expense');
+        expensesList.innerHTML = "";
+        if (localStorage.getItem("expense") != null) {
+            arr = JSON.parse(localStorage.getItem("expense") || "") || [];
+        }
+        arr.forEach((element) => {
+            const item = document.createElement("div");
+            item.classList.add("expense");
             item.innerHTML = `<div>${element.name}<button><i class="fas fa-caret-down"></i></button></div>
         <div class="action"><i class="fas fa-pen"></i><i class="fas fa-trash"></i></div>`;
             expensesList.appendChild(item);
+            this.deleteItem();
             return item;
         });
     }
+    deleteItem() {
+        const items = document.querySelectorAll(".fa-trash");
+        items.forEach((element, index) => {
+            element.addEventListener("click", (e) => {
+                const target = e.target;
+                if (target.classList.contains("fa-trash")) {
+                    arr.splice(index, 1);
+                    localStorage.setItem("expense", JSON.stringify(arr));
+                    this.render();
+                    this.totalAmount();
+                }
+            });
+        });
+    }
+    clearAll() {
+        btnClear.addEventListener("click", () => {
+            arr = [];
+            localStorage.clear();
+            this.render();
+            totalExpense.innerHTML = `<i class="fas fa-dollar-sign"></i> 0`;
+        });
+    }
+    totalAmount() {
+        totalExpense.innerHTML = `<i class="fas fa-dollar-sign"></i> ${arr.reduce((acc, curr) => {
+            return acc + parseInt(curr.amount);
+        }, 0)}`;
+        this.render();
+    }
 }
-const item = new Item();
-item.render();
 function createModal() {
-    container.style.display = 'none';
-    body.style.backgroundColor = '#222222';
+    container.style.display = "none";
+    body.style.backgroundColor = "#222222";
     const modal = new Modal();
     const modalElement = modal.render();
+    modalElement.children[2].addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = modalElement.children[2].children[1]
+            .value;
+        const amount = modalElement.children[2].children[3]
+            .value;
+        const expense = { name, amount };
+        arr.push(expense);
+        localStorage.setItem("expense", JSON.stringify(arr));
+        modalElement.remove();
+        container.style.display = "flex";
+        body.style.backgroundColor = "#fff";
+        item.render();
+        item.totalAmount();
+    }, false);
     body.append(modalElement);
-    modalElement.addEventListener('click', (e) => {
-        if (e.target.classList.contains('close')) {
+    modalElement.addEventListener("click", (e) => {
+        if (e.target.classList.contains("close")) {
             modalElement.remove();
         }
     });
 }
-;
-addExpense.addEventListener('click', createModal);
+addExpense.addEventListener("click", createModal);
+const item = new Item();
+item.render();
