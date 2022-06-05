@@ -9,9 +9,9 @@ const totalExpense = document.querySelector(".total>span");
 class Item {
     constructor() {
         this.render();
-        this.deleteItem();
         this.clearAll();
         this.totalAmount();
+        this.displayAmount();
     }
     render() {
         expensesList.innerHTML = "";
@@ -21,29 +21,41 @@ class Item {
         arr.forEach((element) => {
             const item = document.createElement("div");
             item.classList.add("expense");
-            item.innerHTML = `<div>${element.name}<button><i class="fas fa-caret-down"></i></button></div>
+            item.innerHTML = `<div>${element.name}<button><i  class="fas fa-caret-down"></i></button><span></span></div>
         <div class="action"><i class="fas fa-pen"></i><i class="fas fa-trash"></i></div>`;
             expensesList.appendChild(item);
             this.deleteItem();
+            this.displayAmount();
             return item;
+        });
+    }
+    displayAmount() {
+        const items = document.querySelectorAll(".fa-caret-down");
+        items.forEach((element, index, array) => {
+            element.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const target = e.target;
+                if (target.classList.contains("fa-caret-down")) {
+                    (target.parentElement?.nextElementSibling).innerText = `$ ${arr[index].amount}`;
+                }
+            }, true);
         });
     }
     deleteItem() {
         const items = document.querySelectorAll(".fa-trash");
         items.forEach((element, index) => {
             element.addEventListener("click", (e) => {
-                const target = e.target;
-                if (target.classList.contains("fa-trash")) {
-                    arr.splice(index, 1);
-                    localStorage.setItem("expense", JSON.stringify(arr));
-                    this.render();
-                    this.totalAmount();
-                }
+                e.stopPropagation();
+                arr.splice(index, 1);
+                localStorage.setItem("expense", JSON.stringify(arr));
+                this.render();
+                this.totalAmount();
             });
         });
     }
     clearAll() {
-        btnClear.addEventListener("click", () => {
+        btnClear.addEventListener("click", (e) => {
+            e.stopPropagation();
             arr = [];
             localStorage.clear();
             this.render();
@@ -76,12 +88,27 @@ function createModal() {
         body.style.backgroundColor = "#fff";
         item.render();
         item.totalAmount();
+        editItem();
     }, false);
     body.append(modalElement);
     modalElement.addEventListener("click", (e) => {
         if (e.target.classList.contains("close")) {
             modalElement.remove();
         }
+    });
+    return modalElement;
+}
+function editItem() {
+    const items = document.querySelectorAll(".fa-pen");
+    items.forEach((element, index) => {
+        element.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const newModal = createModal();
+            newModal.children[2].children[1].value = arr[index].name;
+            newModal.children[2].children[3].value = arr[index].amount;
+            arr.splice(index, 1);
+            localStorage.setItem("expense", JSON.stringify(arr));
+        });
     });
 }
 addExpense.addEventListener("click", createModal);

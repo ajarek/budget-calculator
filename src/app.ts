@@ -12,9 +12,9 @@ const totalExpense = document.querySelector(".total>span") as HTMLDivElement;
 class Item {
   constructor() {
     this.render();
-    this.deleteItem();
     this.clearAll();
     this.totalAmount();
+    this.displayAmount();    
   }
 
   render() {
@@ -27,11 +27,30 @@ class Item {
       const item = document.createElement("div");
       item.classList.add("expense");
 
-      item.innerHTML = `<div>${element.name}<button><i class="fas fa-caret-down"></i></button></div>
+      item.innerHTML = `<div>${element.name}<button><i  class="fas fa-caret-down"></i></button><span></span></div>
         <div class="action"><i class="fas fa-pen"></i><i class="fas fa-trash"></i></div>`;
       expensesList.appendChild(item);
-      this.deleteItem();
+       this.deleteItem();
+      this.displayAmount();
+
       return item;
+    });
+  }
+
+displayAmount() {
+    const items = document.querySelectorAll(".fa-caret-down") as NodeListOf<HTMLElement>;
+    items.forEach((element, index,array) => {
+      element.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const target = e.target as HTMLElement;
+        
+        if (target.classList.contains("fa-caret-down")) {
+          ((target.parentElement?.nextElementSibling)as HTMLSpanElement).innerText = `$ ${arr[index].amount}`;
+          
+         
+          
+        }
+      },true);
     });
   }
 
@@ -41,19 +60,19 @@ class Item {
     ) as NodeListOf<HTMLElement>;
     items.forEach((element, index) => {
       element.addEventListener("click", (e) => {
-        const target = e.target as HTMLElement;
-        if (target.classList.contains("fa-trash")) {
+        e.stopPropagation();       
           arr.splice(index, 1);
           localStorage.setItem("expense", JSON.stringify(arr));
-          this.render();
+           this.render();
           this.totalAmount();
-        }
+        
       });
     });
   }
 
 clearAll(){
-    btnClear.addEventListener("click",()=>{
+    btnClear.addEventListener("click",(e)=>{
+        e.stopPropagation();
         arr=[];
   localStorage.clear();
  
@@ -92,6 +111,7 @@ function createModal() {
       body.style.backgroundColor = "#fff";
       item.render();
       item.totalAmount();
+      editItem();
     },
     false
   );
@@ -102,8 +122,23 @@ function createModal() {
       modalElement.remove();
     }
   });
+  return modalElement;
 }
-
+function editItem() {
+   
+  const items = document.querySelectorAll(".fa-pen") as NodeListOf<HTMLElement>;
+  
+  items.forEach((element, index) => {   
+    element.addEventListener("click", (e) => {
+     e.stopPropagation();  
+      const newModal=  createModal();
+      (newModal.children[2].children[1] as HTMLInputElement).value=arr[index].name;
+      (newModal.children[2].children[3] as HTMLInputElement).value=arr[index].amount; 
+      arr.splice(index, 1);
+    localStorage.setItem("expense", JSON.stringify(arr));
+    });
+  });
+}
 addExpense.addEventListener("click", createModal);
 const item = new Item();
 
