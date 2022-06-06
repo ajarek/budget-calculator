@@ -46,9 +46,6 @@ displayAmount() {
         
         if (target.classList.contains("fa-caret-down")) {
           ((target.parentElement?.nextElementSibling)as HTMLSpanElement).innerText = `$ ${arr[index].amount}`;
-          
-         
-          
         }
       },true);
     });
@@ -64,8 +61,7 @@ displayAmount() {
           arr.splice(index, 1);
           localStorage.setItem("expense", JSON.stringify(arr));
            this.render();
-          this.totalAmount();
-        
+          this.totalAmount();       
       });
     });
   }
@@ -112,17 +108,20 @@ function createModal() {
       item.render();
       item.totalAmount();
       editItem();
+
     },
     false
   );
-
+  
   body.append(modalElement);
   modalElement.addEventListener("click", (e: any) => {
     if (e.target.classList.contains("close")) {
       modalElement.remove();
     }
   });
+
   return modalElement;
+
 }
 function editItem() {
    

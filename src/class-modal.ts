@@ -23,11 +23,13 @@ export class Modal {
         const input = document.createElement('input');
         input.type = 'text';
         input.id = 'name';
+        input.setAttribute('required', '');
         const label2 = document.createElement('label');
         label2.textContent = 'Amount';
         const input2 = document.createElement('input');
         input2.type = 'number';
         input2.id = 'amount';
+        input2.setAttribute('required', '');
         const submit = document.createElement('button');
         submit.textContent = 'Add Expense';
         submit.type = 'submit';
